@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package report;
+
+option go_package = "github.com/report-gen/report";
+
+message ReportRequest {
+  string user_id = 1;
+}
+
+message ReportResponse {
+  string report_id = 1;
+  string status = 2;
+}
+
+
+service ReportService {
+  rpc GenerateReport(ReportRequest) returns (ReportResponse);
+}
