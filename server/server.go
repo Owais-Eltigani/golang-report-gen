@@ -30,15 +30,23 @@ func (s *Server) GenerateReport(ctx context.Context, reportRequest *pb.ReportReq
 
 	// ? randomly generating ids for reports
 	reportid := rand.Intn(100)
-	log.Printf("report of user: %s, is: %d", reportRequest.UserId, reportid)
+	log.Printf("report of userid: %s, is: %d", reportRequest.UserId, reportid)
 
 	// adding the request userid and the report id.
 	usersReports[reportRequest.UserId] = append(usersReports[reportRequest.UserId], strconv.Itoa(reportid))
 
-	log.Printf("\n", usersReports[reportRequest.UserId], "\n")
+	// log.Printf("\n", usersReports[reportRequest.UserId], "\n")
 	return &pb.ReportResponse{ReportId: strconv.Itoa(reportid)}, nil
 }
 
+//
+
+func (s *Server) HealthCheck(ctx context.Context, req *pb.HealthCheckRequest) (*pb.HealthCheckResponse, error) {
+	log.Print("Health check requested")
+	return &pb.HealthCheckResponse{Status: "OK"}, nil
+}
+
+// =====================
 func main() {
 
 	// create a listener for users requests

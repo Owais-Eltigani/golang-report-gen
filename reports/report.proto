@@ -13,7 +13,14 @@ message ReportResponse {
 
 }
 
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+    string status = 1;
+}
+
 
 service ReportService {
   rpc GenerateReport(ReportRequest) returns (ReportResponse);
+   rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
 }
