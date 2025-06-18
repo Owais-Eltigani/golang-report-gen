@@ -10,7 +10,7 @@ message ReportRequest {
 
 message ReportResponse {
   string report_id = 1;
-  string status = 2;
+
 }
 
 
