@@ -15,7 +15,6 @@ func main() {
 	conn, err := grpc.NewClient("localhost:5000", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	if err != nil {
-
 		log.Fatal("client: error while conn to server", err)
 		return
 	}
@@ -23,14 +22,13 @@ func main() {
 	defer conn.Close()
 
 	clinet := report.NewReportServiceClient(conn)
-	res, err := clinet.GenerateReport(context.Background(), &report.ReportRequest{UserId: "5"})
+	res, err := clinet.GenerateReport(context.Background(), &report.ReportRequest{UserId: "3"})
 
 	if err != nil {
 		log.Fatal("client: error in response", err)
-
 		return
 	}
 
-	log.Print("response is: ", res.Status)
+	log.Print("response is: ", res.ReportId)
 
 }

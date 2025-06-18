@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"log"
+	"math/rand"
 	"net"
+	"strconv"
 
 	pb "github.com/report-gen/reports"
 	"google.golang.org/grpc"
@@ -11,20 +13,30 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// ? implementing the report interface
 type Server struct {
 	pb.UnimplementedReportServiceServer
 }
 
+// ? a simple global var to save all users requests and their reports ids
+var usersReports = make(map[string][]string)
+
+// ! implementing the report interface
 func (s *Server) GenerateReport(ctx context.Context, reportRequest *pb.ReportRequest) (*pb.ReportResponse, error) {
 	if reportRequest.UserId == "" {
-		log.Fatal("server: error the userid id missing")
 
+		log.Fatal("server: error the userid id missing")
 		return nil, status.Errorf(codes.NotFound, "userid is missing")
 	}
 
-	log.Printf("report of user: %s, was logged", reportRequest.UserId)
-	return &pb.ReportResponse{ReportId: reportRequest.UserId, Status: "success"}, nil
+	// ? randomly generating ids for reports
+	reportid := rand.Intn(100)
+	log.Printf("report of user: %s, is: %d", reportRequest.UserId, reportid)
+
+	// adding the request userid and the report id.
+	usersReports[reportRequest.UserId] = append(usersReports[reportRequest.UserId], strconv.Itoa(reportid))
+
+	log.Printf("\n", usersReports[reportRequest.UserId], "\n")
+	return &pb.ReportResponse{ReportId: strconv.Itoa(reportid)}, nil
 }
 
 func main() {
